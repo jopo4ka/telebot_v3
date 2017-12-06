@@ -1,0 +1,19 @@
+
+
+				.tabbable.tabs-left
+        ul.nav.nav-tabs
+          li.active
+            a(data-toggle="tab" href="#menu1") Menu 1
+          li
+            a(data-toggle="tab" href="#menu2") Menu 2
+          li
+            a(data-toggle="tab" href="#menu3") Menu 3
+        .tab-content
+          #menu1.tab-pane.fade.in.active
+            include tabs/tab1
+          #menu2.tab-pane.fade
+            include tabs/tab2
+          #menu3.tab-pane.fade
+            include tabs/tab3
+	 
+		

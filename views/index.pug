@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title= title
+    include includes/mixins
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+  body
+    nav.navbar.navbar-default.navbar-static-top
+      .container-fluid
+        .navbar-brand My brand
+        ul.nav.navbar-nav
+          li.active
+            a(href="#") Home
+          li
+            a(href="#") Catalogue
+
+    .container
+      .col-md-2
+        ul.nav.nav-pills.nav-stacked
+          each usr in database
+            li
+              a(href="/user/"+usr._id)= usr._id
+      .col-md-10
+        H1 It's not working!!!
+
+    include includes/scripts
+

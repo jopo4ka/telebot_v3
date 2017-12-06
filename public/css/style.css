@@ -1,0 +1,11 @@
+.col-md-10 {
+    position: relative;
+}
+
+.container-messages {
+   height: 75vh;
+   overflow-y: scroll;
+   border-bottom-width: 2px;
+   border-bottom-style: double;
+   border-bottom-color: cornflowerblue;
+}  

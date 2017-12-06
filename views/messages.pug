@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title= title
+    include includes/mixins
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/css/style.css', rel='stylesheet')
+  body
+    nav.navbar.navbar-default.navbar-static-top
+      .container-fluid
+        .navbar-brand Telebot
+        ul.nav.navbar-nav
+          li.active
+            a(href="#") Home
+          li
+            a(href="#") Catalogue
+
+    .container
+      .col-md-2
+        input#start-polling(type="button", value="Start polling") 
+        ul.nav.nav-pills.nav-stacked
+          each usr in database
+            -if (usr.id == id){
+             li.active
+               a(href="/user/"+usr._id)= usr._id
+            -}else{
+              li
+               a(href="/user/"+usr._id)= usr._id
+            -}
+      .col-md-10
+        .container-messages#msg-box
+          each msg in msgs
+            -if (msg.important){
+            .alert.alert-danger
+              p= msg.from+ ' | ' +msg.text
+            -}else{
+            .alert.alert-info
+              p= msg.from+ ' | ' +msg.text
+            -}
+        .input-group
+          span.input-group-addon
+            input#manCh(type="checkbox")
+          input#text(type="text", name="reply-text").form-control
+          span.input-group-btn
+            button#snd(type="button").btn.btn-dafault Send!
+            
+        script.
+          var id = #{id}
+          var manMode = #{man}
+          
+    include includes/scripts
+
