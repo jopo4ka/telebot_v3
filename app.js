@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var dbUtils = require('./modules/database/utils')
-var bot = require('./modules/bot/bot');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -50,7 +49,7 @@ app.io = function(server) {
   io.on('connection', function (socket) {
     socket.on('reply msg', args=>{
       console.log(args.usr + ' | '+ args.text)
-      bot.reply(args.usr, args.text);
+      global.bot.reply(args.usr, args.text);
       dbUtils.addMyMessage(args.text, args.usr)
     })
     socket.on('change man', args=>{
