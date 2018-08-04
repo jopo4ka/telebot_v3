@@ -26,12 +26,14 @@ module.exports.addUser = function(msg){
 module.exports.updCity = function(msg, imp){
 	models.user.findById(msg.from.id, function (err, doc) {
 		if (err) throw err;
-		doc.city = msg.text;
-		doc.save((err)=>{
-			if (err) throw err;
-			console.log('City is updated | new city: '+msg.text);
-		});
-	});
+    if (msg.text != null){
+  		doc.city = msg.text;
+  		doc.save((err)=>{
+  			if (err) throw err;
+  			console.log('City is updated | new city: '+msg.text);
+		  });
+    }else {console.log("Message is \"null\"")}
+  });
 }
 
 module.exports.addMessage = function(msg, imp){
