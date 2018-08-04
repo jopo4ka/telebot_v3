@@ -49,7 +49,7 @@ app.io = function(server) {
   io.on('connection', function (socket) {
     socket.on('reply msg', args=>{
       console.log(args.usr + ' | '+ args.text)
-      bot.reply(args.usr, args.text);
+      global.bot.reply(args.usr, args.text);
       dbUtils.addMyMessage(args.text, args.usr)
     })
     socket.on('change man', args=>{
