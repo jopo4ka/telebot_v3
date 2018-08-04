@@ -2,8 +2,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var models = require('./models');
 // подключение
-//var uri = 'mongodb://jopo4ka:Password1@ds129156.mlab.com:29156/telebot_v2';
-var uri = 'mongodb://localhost/test'
+var uri = 'mongodb://jopo4ka:Password1@ds129156.mlab.com:29156/telebot_v2';
+//var uri = 'mongodb://localhost/test'
 var db = mongoose.connect(uri, {useMongoClient:true})
 
 function random(min, max)
