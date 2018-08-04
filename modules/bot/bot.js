@@ -1,7 +1,8 @@
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
-const bot = new Telegraf('463835817:AAEqgS7QrA5ESzMRRVuesEUHmpMuCbeAyBA')
+const bot = new Telegraf('432798090:AAHSlICzRW9WqsTz80Jx9YfqEioqA0hWtaA')
+//const bot = new Telegraf('463835817:AAEqgS7QrA5ESzMRRVuesEUHmpMuCbeAyBA')
 
 const keyboards = require('./keyboards');
 var dbUtils = require('./../database/utils');
@@ -12,7 +13,7 @@ var msg;
 bot.start((ctx) => {
 	console.log('started:', ctx.from.id)
 	dbUtils.addUser(ctx.message);
-	if(dbUtils.checkMan(ctx.from.id)){
+	//if(dbUtils.checkMan(ctx.from.id)){
 		var prepMsg = 'Добро пожаловать к нам! Пожалуйста, выберите город из меню ниже.'
 		ctx.reply(prepMsg, Markup
 		.keyboard(keyboards.city)
@@ -21,14 +22,14 @@ bot.start((ctx) => {
 		.extra()
 		)
 		dbUtils.addMyMessage(prepMsg, ctx.from.id);
-	}else{console.log('Manual mode')}
+	//}else{console.log('Manual mode')}
 })
 
 // City change menu
 bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Ебеня', '4️⃣ Москва' ], ctx => {
 	dbUtils.updCity(ctx.message);
 	dbUtils.addMessage(ctx.message);
-	if(dbUtils.checkMan(ctx.from.id)){
+	//if(dbUtils.checkMan(ctx.from.id)){
 		var prepMsg = 'Замечательный город! Выберете группу товаров из меню ниже.';
 		ctx.reply(prepMsg, Markup
 		.keyboard(keyboards.groups)
@@ -37,7 +38,7 @@ bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Ебеня', '4️�
 		.extra()
 		)
 		dbUtils.addMyMessage(prepMsg, ctx.from.id);
-	}	
+	//}
 })
 
 //Back in main menu
@@ -171,7 +172,7 @@ bot.hears('💰 Работа у нас', (ctx) =>{
 //get current orders
 bot.hears(/^🗂 /, (ctx)=>{
 	var prepareMsg = '';
-	dbUtils.getOrders(ctx.message, (res)=>{ 
+	dbUtils.getOrders(ctx.message, (res)=>{
 		console.log("Заказы пользователя | "+ ctx.message.from.id)
 		prepareMsg += "Ваш заказ \n"
 		prepareMsg += '-----------------------------------\n';

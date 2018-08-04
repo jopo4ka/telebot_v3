@@ -13,10 +13,14 @@ function random(min, max)
 
 module.exports.addUser = function(msg){
 		var user = new models.user({_id : msg.from.id, first_name: msg.from.first_name, last_name: msg.from.last_name});
-		user.save((err)=> {
-			if(err) return console.log(err);
-			console.log("Сохранен объект user", user);
-		});
+    try {
+  		user.save((err)=> {
+  			if(err) return console.log(err);
+  			console.log("Сохранен объект user", user);
+  		});
+    }catch {
+      console.log("User: " + msg.from.id + " - " + msg.from.first_name + "is currently added");
+    }
 }
 
 module.exports.updCity = function(msg, imp){
@@ -45,7 +49,7 @@ module.exports.addMyMessage = function(text, to){
 		if (err) throw err;
 		console.log('Succesfull added my message');
 	})
-} 
+}
 
 module.exports.addOrder = function(msg, match, group, imp){
 	if (group == undefined) group = "WTF???";
@@ -101,4 +105,3 @@ module.exports.changeMan= function(id, man){
 		})
 	})
 }
-
