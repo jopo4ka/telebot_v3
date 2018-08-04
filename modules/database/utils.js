@@ -26,7 +26,7 @@ module.exports.addUser = function(msg){
 module.exports.updCity = function(msg, imp){
 	models.user.findById(msg.from.id, function (err, doc) {
     console.log(doc);
-    if (doc == null){
+    if (doc != null){
   		if (err) throw err;
       if (msg.text != null){
     		doc.city = msg.text;
