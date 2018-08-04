@@ -25,14 +25,17 @@ module.exports.addUser = function(msg){
 
 module.exports.updCity = function(msg, imp){
 	models.user.findById(msg.from.id, function (err, doc) {
-		if (err) throw err;
-    if (msg.text != null){
-  		doc.city = msg.text;
-  		doc.save((err)=>{
-  			if (err) throw err;
-  			console.log('City is updated | new city: '+msg.text);
-		  });
-    }else {console.log("Message is \"null\"")}
+    console.log(doc);
+    if (doc == null){
+  		if (err) throw err;
+      if (msg.text != null){
+    		doc.city = msg.text;
+    		doc.save((err)=>{
+    			if (err) throw err;
+    			console.log('City is updated | new city: '+msg.text);
+  		  });
+      }else {console.log("Message is \"null\"")}
+    }
   });
 }
 
