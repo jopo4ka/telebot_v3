@@ -3,6 +3,10 @@ var socket = io();
 var c = document.querySelector('#manCh');
 var tempMsg = null;
 
+//Функция подписки на новые сообщения
+//========================================
+//======TODO: Переделать на socket =======
+//========================================
 function subscribe(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/msg", true);
@@ -12,25 +16,21 @@ function subscribe(){
       var list = document.getElementById('msg-box')
       var newDiv = document.createElement('div')
       newDiv.className = 'alert alert-danger'
-      newDiv.innerHTML = prepareMsg.from.id+ " | " +prepareMsg.text; 
+      newDiv.innerHTML = prepareMsg.from.id+ " | " +prepareMsg.text;
       list.appendChild(newDiv);
       list.scrollTop = list.scrollHeight;
     }
     tempMsg = this.response;
-    //subscribe();
     setTimeout(subscribe, 2000)
   };
-  
+
   xhr.onerror = xhr.onabort = function(){
     setTimeout(subscribe, 30000);
   };
 
   xhr.send('');
 }
-$(function () {
-  $('#start-polling').click(function(){
-    subscribe();
-  })
+  // Функция для отправки сообщений
   $('#snd').click(function(){
     socket.emit('reply msg', {text:$('#text').val(), usr:id});
     var cont = $('#msg-box');
@@ -39,19 +39,26 @@ $(function () {
     $('#text').val('');
     return false;
   });
+  // Чек-бокс для изменения режима ответа (руч\Автомат)
   $('#manCh').click(function(){
     c.checked != c.checked;
     socket.emit('change man', {man:c.checked, id:id });
   });
+//});
+//Кнопка изменения состояния оплаты
+$('.change').click(function(){
+  var nOrder = $(this).val();
+  socket.emit('change_payd', {num:nOrder});
+  console.log("emited socket", nOrder);
 });
+//Инициализация чекбокса режима ответы
 function chMan(){
   var c = document.querySelector('#manCh');
   c.checked = manMode;  // поставить checked, если он не установлен
-  console.log('this is working | '+ manMode)
 }
+//Выполняются после загрузки страницы
 function init(){
   chMan();
   subscribe();
 }
 window.onload = init()
-

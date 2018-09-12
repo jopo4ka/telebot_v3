@@ -3,30 +3,40 @@ const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 const bot = new Telegraf('432798090:AAHSlICzRW9WqsTz80Jx9YfqEioqA0hWtaA')
 //const bot = new Telegraf('463835817:AAEqgS7QrA5ESzMRRVuesEUHmpMuCbeAyBA')
-
+var debug = require('debug')('telebot-v3:bot');
 const keyboards = require('./keyboards');
 var dbUtils = require('./../database/utils');
-
+var mDbg = true;
 var msg;
 
 //Start command is received
 bot.start((ctx) => {
-	console.log('started:', ctx.from.id)
-	dbUtils.addUser(ctx.message);
+	if (mDbg)
+		debug('started:', ctx.from.id)
+
+	dbUtils.addUser(ctx.message, req=>{
+		if (req){
+			var prepMsg = 'Добро пожаловать к нам! Пожалуйста, выберите город из меню ниже.'
+			ctx.reply(prepMsg, Markup
+			.keyboard(keyboards.city)
+			.oneTime()
+			.resize()
+			.extra()
+			)
+			dbUtils.addMyMessage(prepMsg, ctx.from.id);
+		}else{
+			if(dbUtils.checkMan(ctx.from.id)){
+				debug("NOT MANUAL MODE")
+			}else{debug('Manual mode')}
+		}
+	});
 	//if(dbUtils.checkMan(ctx.from.id)){
-		var prepMsg = 'Добро пожаловать к нам! Пожалуйста, выберите город из меню ниже.'
-		ctx.reply(prepMsg, Markup
-		.keyboard(keyboards.city)
-		.oneTime()
-		.resize()
-		.extra()
-		)
-		dbUtils.addMyMessage(prepMsg, ctx.from.id);
+
 	//}else{console.log('Manual mode')}
 })
 
 // City change menu
-bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Ебеня', '4️⃣ Москва' ], ctx => {
+bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Уфа', '4️⃣ Москва' ], ctx => {
 	dbUtils.updCity(ctx.message);
 	dbUtils.addMessage(ctx.message);
 	//if(dbUtils.checkMan(ctx.from.id)){
@@ -173,18 +183,33 @@ bot.hears('💰 Работа у нас', (ctx) =>{
 bot.hears(/^🗂 /, (ctx)=>{
 	var prepareMsg = '';
 	dbUtils.getOrders(ctx.message, (res)=>{
-		console.log("Заказы пользователя | "+ ctx.message.from.id)
+		if (mDbg)
+			debug("Заказы пользователя | "+ ctx.message.from.id)
+
 		prepareMsg += "Ваш заказ \n"
 		prepareMsg += '-----------------------------------\n';
-		console.log("------------------------------------")
+		if (mDbg)
+			debug("------------------------------------")
 		var num = 1;
 		for (var ordr in res){
-			prepareMsg += num+ ' | '+ res[ordr].num+ ' | '+ res[ordr].text + '\n'
-			console.log(num+ ' | '+ res[ordr].num+ ' | '+ res[ordr].text)
+			var temp = res[ordr].payd ? "Оплачен" : "Не оплачен";
+			prepareMsg += num+ ' | '+ res[ordr].num+ ' | '+ res[ordr].text + ' | ' + temp +'\n'
+			if (mDbg)
+				debug(num+ ' | '+ res[ordr].num+ ' | '+ res[ordr].text);
 			num++
 		}
 	ctx.reply(prepareMsg)
 	});
+});
+bot.hears('💳 Способы оплаты заказа', (ctx)=>{
+	if (mDbg)
+		debug("Способы оплаты");
+	var prepMsg = "Для оплаты Вы можете использовать QIWI кошельки:\n"+
+								"+7-987-123-45-67\n"+
+								"+7-987-234-56-78\n"+
+								"При оплате ОБЯЗАТЕЛЬНО указывайте комментарий с номером заказа";
+	ctx.reply(prepMsg);
+
 });
 
 //Added another messages in database
@@ -195,9 +220,10 @@ bot.on('message', (ctx) => {
 	if (!manMode){
 		var prepMsg = 'Простите, я Вас не понимаю. Пожалуйста воспользуйтесь меню.'
 		ctx.reply(prepMsg)
-		console.log('Received message | from: '+ ctx.from.id);
+		if (mDbg)
+			debug('Received message | from: '+ ctx.from.id);
 		dbUtils.addMyMessage(prepMsg, ctx.from.id);
-	}else{console.log('Manual mode')}
+	}else{if (mDbg) {console.log('Manual mode')}}
 	})
 })
 

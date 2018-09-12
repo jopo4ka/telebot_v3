@@ -9,7 +9,6 @@ var debug = require('debug')('telebot-v3:server');
 var http = require('http');
 var bot = require('./../modules/bot/bot');
 global.bot = bot;
-//var global.bot = require('./../modules/bot/bot');
 
 /**
  * Get port from environment and store in Express.

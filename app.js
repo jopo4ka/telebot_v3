@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var debug = require('debug')('telebot-v3:app');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,13 +48,19 @@ app.use(function(err, req, res, next) {
 app.io = function(server) {
   var io = require('socket.io')(server);
   io.on('connection', function (socket) {
+    //Ответ на сообщение
     socket.on('reply msg', args=>{
-      console.log(args.usr + ' | '+ args.text)
+      debug(args.usr + ' | '+ args.text);
       global.bot.reply(args.usr, args.text);
       dbUtils.addMyMessage(args.text, args.usr)
     })
+    //Изменение состояния "(Не)Оплачен"
+    socket.on('change_pay', args=>{
+      dbUtils.changePayd(args.num);
+    });
+    // Изменение метода ответа на сообщения (Ручной\Автомат)
     socket.on('change man', args=>{
-      console.log('Manual mode is: '+args.man)
+      debug('Manual mode is: '+args.man);
       dbUtils.changeMan(args.id, args.man);
     });
   });
