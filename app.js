@@ -11,6 +11,7 @@ var users = require('./routes/users');
 
 var app = express();
 var debug = require('debug')('telebot-v3:app');
+var dSocket = require('debug')('telebot-v3:socket');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,10 +45,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 app.io = function(server) {
   var io = require('socket.io')(server);
+  var localMsg = "";
   io.on('connection', function (socket) {
+    global.socket = socket;
     //Ответ на сообщение
     socket.on('reply msg', args=>{
       debug(args.usr + ' | '+ args.text);
@@ -55,7 +57,8 @@ app.io = function(server) {
       dbUtils.addMyMessage(args.text, args.usr)
     })
     //Изменение состояния "(Не)Оплачен"
-    socket.on('change_pay', args=>{
+    socket.on('change_payd', args=>{
+      dSocket("Socket received!\nnum: "+ args.num);
       dbUtils.changePayd(args.num);
     });
     // Изменение метода ответа на сообщения (Ручной\Автомат)

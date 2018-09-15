@@ -30,16 +30,13 @@ bot.start((ctx) => {
 			}else{debug('Manual mode')}
 		}
 	});
-	//if(dbUtils.checkMan(ctx.from.id)){
-
-	//}else{console.log('Manual mode')}
 })
 
 // City change menu
 bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Уфа', '4️⃣ Москва' ], ctx => {
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.updCity(ctx.message);
 	dbUtils.addMessage(ctx.message);
-	//if(dbUtils.checkMan(ctx.from.id)){
 		var prepMsg = 'Замечательный город! Выберете группу товаров из меню ниже.';
 		ctx.reply(prepMsg, Markup
 		.keyboard(keyboards.groups)
@@ -53,6 +50,7 @@ bot.hears(['1️⃣ Дефолт', '2️⃣ НУ', '3️⃣ Уфа', '4️⃣ М
 
 //Back in main menu
 bot.hears('👣 Назад', ctx=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Вернулись.', Markup
 	.keyboard(keyboards.groups)
@@ -64,6 +62,7 @@ bot.hears('👣 Назад', ctx=>{
 
 //Price menu
 bot.hears('🌚 Гашик (натур)', (ctx) =>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Выберете вес и цену из меню ниже.', Markup
 	.keyboard(keyboards.gar)
@@ -74,6 +73,7 @@ bot.hears('🌚 Гашик (натур)', (ctx) =>{
 })
 //Create new order
 bot.hears(/^🌚 (.+)/, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addOrder(ctx.message, ctx.match, "Гашик");
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Спасибо за заказ. Проверить состояние заказа можно выбрав пункт меню: \"Посмотреть текущий заказ\".', Markup
@@ -85,6 +85,7 @@ bot.hears(/^🌚 (.+)/, (ctx)=>{
 });
 
 bot.hears('☢️ тв (гаш химка)', (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Выберете вес и цену из меню ниже.', Markup
 	.keyboard(keyboards.tv)
@@ -95,6 +96,7 @@ bot.hears('☢️ тв (гаш химка)', (ctx)=>{
 })
 //Create new order
 bot.hears(/^☢️ (.+)/, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addOrder(ctx.message, ctx.match, "тв");
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Спасибо за заказ. Проверить состояние заказа можно выбрав пункт меню: \"Посмотреть текущий заказ\".', Markup
@@ -106,6 +108,7 @@ bot.hears(/^☢️ (.+)/, (ctx)=>{
 });
 
 bot.hears('👁 Марки (лизер,лсд)', (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Выберете количество и цену из меню ниже.', Markup
 	.keyboard(keyboards.mar)
@@ -116,6 +119,7 @@ bot.hears('👁 Марки (лизер,лсд)', (ctx)=>{
 })
 //Create new order
 bot.hears(/^👁 (.+)/, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addOrder(ctx.message, ctx.match, "Марки");
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Спасибо за заказ. Проверить состояние заказа можно выбрав пункт меню: \"Посмотреть текущий заказ\".', Markup
@@ -127,6 +131,7 @@ bot.hears(/^👁 (.+)/, (ctx)=>{
 });
 
 bot.hears('💎 СК (кристаллы,лёд)', (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Выберете вес и цену из меню ниже.', Markup
 	.keyboard(keyboards.sk)
@@ -137,6 +142,7 @@ bot.hears('💎 СК (кристаллы,лёд)', (ctx)=>{
 })
 //Create new order
 bot.hears(/^💎 (.+)/, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addOrder(ctx.message, ctx.match, "СК");
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Спасибо за заказ. Проверить состояние заказа можно выбрав пункт меню: \"Посмотреть текущий заказ\".', Markup
@@ -148,6 +154,7 @@ bot.hears(/^💎 (.+)/, (ctx)=>{
 });
 
 bot.hears('⚗️ Мефедрон (заводской)', (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message);
 	ctx.reply('Выберете вес и цену из меню ниже.', Markup
 	.keyboard(keyboards.mef)
@@ -158,6 +165,7 @@ bot.hears('⚗️ Мефедрон (заводской)', (ctx)=>{
 })
 //Create new order
 bot.hears(/^⚗️ (.+)/, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addOrder(ctx.message, ctx.match, "Мефедрон");
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Спасибо за заказ. Проверить состояние заказа можно выбрав пункт меню: \"Посмотреть текущий заказ\".', Markup
@@ -169,6 +177,7 @@ bot.hears(/^⚗️ (.+)/, (ctx)=>{
 });
 
 bot.hears('💰 Работа у нас', (ctx) =>{
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.addMessage(ctx.message, true);
 	ctx.reply('Пожалуйста оставайтесь в сети, наши операторы с вами свяжутся.', Markup
 	.keyboard(keyboards.sk)
@@ -178,9 +187,9 @@ bot.hears('💰 Работа у нас', (ctx) =>{
 	)
 })
 
-
 //get current orders
 bot.hears(/^🗂 /, (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	var prepareMsg = '';
 	dbUtils.getOrders(ctx.message, (res)=>{
 		if (mDbg)
@@ -198,24 +207,35 @@ bot.hears(/^🗂 /, (ctx)=>{
 				debug(num+ ' | '+ res[ordr].num+ ' | '+ res[ordr].text);
 			num++
 		}
-	ctx.reply(prepareMsg)
+		ctx.reply(prepMsg, Markup
+			.keyboard(keyboards.groups)
+			.oneTime()
+			.resize()
+			.extra()
+		);
 	});
 });
 bot.hears('💳 Способы оплаты заказа', (ctx)=>{
+	global.socket.emit("incoming_msg", ctx.message);
 	if (mDbg)
 		debug("Способы оплаты");
 	var prepMsg = "Для оплаты Вы можете использовать QIWI кошельки:\n"+
 								"+7-987-123-45-67\n"+
 								"+7-987-234-56-78\n"+
 								"При оплате ОБЯЗАТЕЛЬНО указывайте комментарий с номером заказа";
-	ctx.reply(prepMsg);
-
+	ctx.reply(prepMsg, Markup
+		.keyboard(keyboards.groups)
+		.oneTime()
+		.resize()
+		.extra()
+	);
 });
 
 //Added another messages in database
 bot.on('message', (ctx) => {
 	global.msg = ctx.message;
 	dbUtils.addMessage(ctx.message, true);
+	global.socket.emit("incoming_msg", ctx.message);
 	dbUtils.checkMan(ctx.from.id, manMode=>{
 	if (!manMode){
 		var prepMsg = 'Простите, я Вас не понимаю. Пожалуйста воспользуйтесь меню.'
@@ -223,7 +243,7 @@ bot.on('message', (ctx) => {
 		if (mDbg)
 			debug('Received message | from: '+ ctx.from.id);
 		dbUtils.addMyMessage(prepMsg, ctx.from.id);
-	}else{if (mDbg) {console.log('Manual mode')}}
+	}else{if (mDbg) {debug('Manual mode')}}
 	})
 })
 

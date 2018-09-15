@@ -122,10 +122,14 @@ module.exports.changeMan= function(id, man){
 	})
 }
 // Изменение состояния заказа "(Не)Оплачен"
-module.exports.changePayd= function(num, cb){
-    models.order.findOne({"num":num}, (err, res)=>{
+module.exports.changePayd= function(num){
+    models.order.findOne({"num":num}, (err, doc)=>{
       if (err) throw err;
-      DBDebug(res);
-      cb(res);
+      debug(doc);
+      doc.payd = !doc.payd;
+      doc.save((err)=>{
+        if(err) throw err;
+        debug("Payd changed: "+ doc)
+      });
     });
 }
